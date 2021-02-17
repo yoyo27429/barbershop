@@ -1,0 +1,49 @@
+﻿@page
+@model WebApp.Pages.Admin.Notification.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Pages/Shared/_AdminLayout.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Notification[0].Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Notification[0].Content)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Notification[0].Customer)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Notification) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Content)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Customer.CustomerID)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.NotificationID">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.NotificationID">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.NotificationID">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

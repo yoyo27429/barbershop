@@ -1,0 +1,35 @@
+﻿@page
+@model WebApp.Pages.AllDesignerModel
+@{
+    ViewData["Title"] = "AllDesigner";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+<style>
+    a{
+        color: black;
+        font-size: 2rem;
+    }
+    .fullName{
+        margin-top: 30px;
+    }
+    .designImg{
+        margin-bottom: 2rem;
+    }
+</style>
+<h2>Our Team</h2>
+<div id="service">
+    @foreach (var item in Model.Employee)
+    {
+        <div class="mb-2">
+            <div class="col-md-3 fullName">
+                <a asp-page="./Designer" asp-route-id="@item.EmployeeID">@Html.DisplayFor(modelItem => item.FullName)</a>
+            </div>
+            <div class="col-md-3 designImg">
+                <a asp-page="./Designer" asp-route-id="@item.EmployeeID">
+                    <img src="@Html.DisplayFor(modelItem => item.ImgPath)" alt="Alternate Text" />
+                </a>
+            </div>
+        </div>
+    }
+</div>
+

@@ -1,0 +1,98 @@
+﻿@page
+@model WebApp.Pages.Customer.Order.addScoreModel
+@{
+    ViewData["Title"] = "addScore";
+    Layout = "~/Pages/Shared/_CustomerLayout.cshtml";
+}
+<script type="text/javascript" src="~/js/jquery-3.4.1.min.js"></script>
+<style>
+    .scoreBox {
+        width: 95%;
+        overflow: auto;
+        padding-bottom: 20px;
+        max-width:300px;
+    }
+    .howMuch>img {
+        width: 18%;
+    }
+    button {
+        float: right;
+        width: 80px;
+        height: 30px;
+    }
+
+    .fullStar {
+        background-color: #F6DF6F;
+    }
+
+    .fullStar2 {
+        background-color: #F6DF6F;
+    }
+    .hidden{
+        display: none;
+    }
+    form{
+        width:80%;
+        margin-left: 10%;
+    }
+    .body-content{
+        min-width: 10px;
+    }
+    textarea.form-control{
+        height: 100px;
+    }
+</style>
+<h2>Create Review</h2>
+<form method="post">
+    <h3>Overall rating</h3>
+    <div class="scoreBox">
+        <div class="howMuch">
+            <img id="1" src="~/images/emptyStar.png">
+            <img id="2" src="~/images/emptyStar.png">
+            <img id="3" src="~/images/emptyStar.png">
+            <img id="4" src="~/images/emptyStar.png">
+            <img id="5" src="~/images/emptyStar.png">
+        </div>
+    </div>
+    <div class="form-group">
+        <label asp-for="Review.Headline" class="control-label">Add a headline</label>
+        <input asp-for="Review.Headline" class="form-control" />
+        <span asp-validation-for="Review.Headline" class="text-danger"></span>
+    </div>
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="form-group">
+        <input asp-for="Review.Rating" id="score" type="hidden" value="0" />
+        <span asp-validation-for="Review.Rating" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Review.Content" class="control-label">Write your review</label>
+        <textarea asp-for="Review.Content" class="form-control"></textarea>
+        <span asp-validation-for="Review.Content" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <input type="submit" value="addScore" class="btn btn-default" />
+    </div>
+</form>
+
+<script>
+    var index, i, point;
+    $('.howMuch img').hover(
+        function () {
+            index = this.id;
+            for (i = 1; i <= index; i++) {
+                $('#' + i).addClass('fullStar');
+            }
+        }, function () {
+            $('.howMuch img').removeClass('fullStar');
+        });
+    $('.howMuch img').click(function () {
+        $('.howMuch img').removeClass('fullStar2');
+        point = this.id;
+        for (i = 1; i <= index; i++) {
+            $('#' + i).addClass('fullStar2');
+        }
+        //catch the socre and change the value in the input element
+        document.getElementById('score').setAttribute("value", point);
+    });
+    
+</script>

@@ -1,0 +1,298 @@
+﻿@page
+@model WebApp.Pages.DesignerModel
+@{
+    ViewData["Title"] = "designer";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<script type="text/javascript" src="~/js/jquery-3.4.1.min.js"></script>
+<style>
+    .fullStar2 {
+        background-color: #F6DF6F;
+    }
+
+    .Review > .smallBox > .scoreBox {
+        width: 20%;
+        float: left;
+    }
+
+    .Review > .smallBox > h4 {
+        float: left;
+    }
+
+    .scoreBox {
+        overflow: auto;
+        max-width: 200px;
+        float: left;
+    }
+
+    .smallBox {
+        width: 100%;
+        overflow: auto;
+    }
+
+    .howMuch > img {
+        width: 15%;
+    }
+
+    div[class^="howMuch"] > img {
+        width: 15%;
+    }
+
+    .hidden {
+        display: none;
+    }
+
+    .Review {
+        margin-top: 50px;
+        border-bottom: solid 1px lightgray;
+    }
+
+    .customerImg {
+        width: 40px;
+        margin-right: 5px;
+        float: left;
+    }
+
+    .Designer {
+        float: left;
+    }
+
+    #DesignerDetail {
+        height: auto;
+        overflow: auto;
+        margin-top: 5%;
+        border: 3px solid gray;
+        border-radius: 10px;
+        padding: 12px;
+    }
+
+        #DesignerDetail > img {
+            float: left;
+        }
+
+    table {
+        width: 100%;
+    }
+
+    .picture {
+        width: 100%;
+    }
+
+    .ratingBox {
+        width: 20%;
+    }
+
+    .heading {
+        font-weight: bold;
+    }
+
+    .content {
+        height: auto;
+        min-height: 50px;
+        font-size: 1.6rem;
+    }
+
+    #showAvg {
+        float: left;
+        font-weight: bold;
+        font-size: 2rem;
+        margin: 0px;
+        line-height: 40px;
+    }
+</style>
+@{
+    int TotalScore = 0;
+    int Count = Model.Order.Count();
+    int id = 1;
+    string review = "howMuch";
+}
+@foreach (var o in Model.Order)
+{
+    TotalScore += o.Review.Rating;
+}
+@{
+    int avgScore = TotalScore / Count;
+}
+
+<div id="DesignerDetail" class="container border rounded">
+    <table cellpadding="2">
+        <tr>
+            <td class="col-md-4" rowspan="2"><img class="picture" src="@Html.DisplayFor(model => model.Employee.Image)" alt="Alternate Text" /></td>
+            <td class="col-md-8"><h2 class="Designer">@Html.DisplayFor(model => model.Employee.FullName)</h2></td>
+        </tr>
+        <tr>
+            <td class="col-md-9">
+                <div class="Designer">
+                    <h4>Avrage</h4>
+                    <div class="scoreBox">
+                        <div class="howMuch">
+                            <img id="avg1" src="~/images/emptyStar.png">
+                            <img id="avg2" src="~/images/emptyStar.png">
+                            <img id="avg3" src="~/images/emptyStar.png">
+                            <img id="avg4" src="~/images/emptyStar.png">
+                            <img id="avg5" src="~/images/emptyStar.png">
+                        </div>
+                    </div>
+                    <p id="showAvg">@avgScore/5</p>
+                    <input id="AvgScore" type="hidden" value="@avgScore" />
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
+@foreach (var item in Model.Order) {
+    string tmp = review + id.ToString();
+    <div class="Review">
+        <table>
+            <tr>
+                <td colspan="2"><img class="customerImg" src="https://i.imgur.com/UAmrOi5.png" /><h4>Customer ID: @Html.DisplayFor(modelItem => item.CustomerID)</h4></td>
+            </tr>
+            <tr>
+                <td class="ratingBox">
+                    <div class="smallBox">
+                        <div class="scoreBox">
+                            <div class="@tmp">
+                                <img id="a1" src="~/images/emptyStar.png">
+                                <img id="a2" src="~/images/emptyStar.png">
+                                <img id="a3" src="~/images/emptyStar.png">
+                                <img id="a4" src="~/images/emptyStar.png">
+                                <img id="a5" src="~/images/emptyStar.png">
+                            </div>
+                        </div>
+                    </div>
+                </td>
+                <td><h4 class="heading">@Html.DisplayFor(modelItem => item.Review.Headline)</h4></td>
+            </tr>
+            <tr><td>2019/02/03</td></tr>
+            <tr><td><h5 class="content">@Html.DisplayFor(modelItem => item.Review.Content)</h5></td></tr>
+        </table>
+        <p><input id="score" type="hidden" value="@item.Review.Rating" /></p>
+    </div>
+
+    <script>
+        var point = document.getElementById('score').getAttribute("value");
+        //console.log(point);
+        var reviewNum = document.getElementsByClassName('Review').length;
+        //console.log(reviewNum);
+        var nextID = reviewNum;
+        var s = "howMuch" + nextID
+        //console.log(s);
+        for (i = 1; i <= point; i++) {
+            $('.howMuch' + nextID + '>' + '#a' + i).addClass('fullStar2');
+            console.log(i);
+            //
+        };
+        var obj = document.getElementById('score');
+        var inputParent = obj.parentNode;
+        inputParent.removeChild(obj);
+    </script>
+    id += 1;
+}
+
+<input type="hidden" value="@Count">
+
+<script>
+
+    var point = document.getElementById('AvgScore').getAttribute("value");
+    console.log("avg point:" + point);
+    for (i = 1; i <= point; i++) {
+        $('#avg' + i).addClass('fullStar2');
+    };
+</script>
+
+@*@{
+        int TotalScore = 0;
+        int Count = Model.Order.Count();
+        int id = 1;
+        string review = "howMuch";
+    }
+    @foreach (var o in Model.Order)
+    {
+        TotalScore += o.Review.Rating;
+    }
+    @{
+        int avgScore = TotalScore / Count;
+    }
+
+    <div id="DesignerDetail" class="container">
+        <table cellpadding="2">
+            <tr>
+                <td class="col-md-4" rowspan="2"><img class="picture" src="@Html.DisplayFor(model => model.Employee.Image)" alt="Alternate Text" /></td>
+                <td class="col-md-8"><h2 class="Designer">@Html.DisplayFor(model => model.Employee.FullName)</h2></td>
+            </tr>
+            <tr>
+                <td class="col-md-9">
+                    <div class="Designer">
+                        <h4>General Score</h4>
+                        <div class="scoreBox">
+                            <div class="howMuch">
+                                <img id="avg1" src="~/images/emptyStar.png">
+                                <img id="avg2" src="~/images/emptyStar.png">
+                                <img id="avg3" src="~/images/emptyStar.png">
+                                <img id="avg4" src="~/images/emptyStar.png">
+                                <img id="avg5" src="~/images/emptyStar.png">
+                            </div>
+                        </div>
+                        <input id="AvgScore" type="hidden" value="@avgScore" />
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <input type="hidden" value="@Count">
+
+    @foreach (var item in Model.Order)
+    {
+        string tmp = review + id.ToString();
+        <div class="Review">
+            <div class="smallBox">
+                <h4>Customer ID: @Html.DisplayFor(modelItem => item.CustomerID)</h4>
+                <div class="scoreBox">
+                    <div class="@tmp">
+                        <img id="a1" src="~/images/emptyStar.png">
+                        <img id="a2" src="~/images/emptyStar.png">
+                        <img id="a3" src="~/images/emptyStar.png">
+                        <img id="a4" src="~/images/emptyStar.png">
+                        <img id="a5" src="~/images/emptyStar.png">
+                    </div>
+                </div>
+            </div>
+
+            <p><input id="score" type="hidden" value="@item.Review.Rating" /></p>
+            <h4>@Html.DisplayFor(modelItem => item.Review.Headline)</h4>
+            <h5>@Html.DisplayFor(modelItem => item.Review.Content)</h5>
+        </div>
+
+        <script>
+            var point = document.getElementById('score').getAttribute("value");
+            //console.log(point);
+            var reviewNum = document.getElementsByClassName('Review').length;
+            //console.log(reviewNum);
+            var nextID = reviewNum;
+            var s = "howMuch" + nextID
+            //console.log(s);
+            for (i = 1; i <= point; i++) {
+                $('.howMuch' + nextID + '>' + '#a' + i).addClass('fullStar2');
+                console.log(i);
+                //
+            };
+            var obj = document.getElementById('score');
+            var inputParent = obj.parentNode;
+            inputParent.removeChild(obj);
+        </script>
+
+        id += 1;
+
+    }
+
+    <script>
+
+        var point = document.getElementById('AvgScore').getAttribute("value");
+        console.log("avg point:" + point);
+        for (i = 1; i <= point; i++) {
+            $('#avg' + i).addClass('fullStar2');
+        };
+    </script>*@
+
+

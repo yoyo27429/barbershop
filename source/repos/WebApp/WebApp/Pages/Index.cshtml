@@ -1,0 +1,187 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+<style>
+    .img-responsive {
+        width: 100%;
+    }
+
+    .disigner {
+        width: 96%;
+        margin: 2%;
+        font-size: 2rem;
+    }
+    /*----------------------------------------------change this start---------------------------------------------------- */
+    .seeMore {
+        float: right;
+        font-size: 2rem;
+        margin-right: 2%;
+    }
+    /*----------------------------------------------change this end---------------------------------------------------- */
+    #bookingIcon {
+        display: block;
+        width: 90px;
+        height: 90px;
+        background-color: black;
+        position: fixed;
+        right: 0px;
+        top: 20%;
+        color: white;
+        font-size: 2rem;
+        line-height: 45px;
+        text-align: center;
+        border-radius: 10px 0px 0px 10px;
+    }
+
+    a {
+        color: black;
+    }
+
+    a > h3 {
+        text-align: center;
+    }
+
+    h2 {
+        margin-left: 2%;
+    }
+
+    table {
+        padding: 2%;
+        width: 100%;
+        font-size: 2.2rem;
+    }
+    /*----------------------------------------------change this start---------------------------------------------------- */
+
+    #aboutUs > img {
+        float: left;
+        overflow: auto;
+        border-right: 3px solid;
+        padding-right: 5%
+    }
+
+    .aboutUs {
+        float: left;
+        margin-top: 5%;
+        font-size: 2rem;
+        padding-left: 5%;
+        text-align: justify;
+    }
+    /*----------------------------------------------change this end---------------------------------------------------- */
+    #service {
+        width: 100%;
+        float: left;
+    }
+
+    .contentBox {
+        margin-top: 5%;
+    }
+</style>
+<div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="6000">
+    <ol class="carousel-indicators">
+        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+        <li data-target="#myCarousel" data-slide-to="1"></li>
+        <li data-target="#myCarousel" data-slide-to="2"></li>
+    </ol>
+    <div class="carousel-inner" role="listbox">
+        <div class="item active">
+            <img src="https://i.imgur.com/v8GUspl.png" alt="ASP.NET" class="img-responsive" />
+        </div>
+        <div class="item">
+            <img src="https://i.imgur.com/v8GUspl.png" alt="Visual Studio" class="img-responsive" />
+        </div>
+        <div class="item">
+            <img src="https://i.imgur.com/v8GUspl.png" alt="Microsoft Azure" class="img-responsive" />
+        </div>
+    </div>
+    <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+    </a>
+    <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+    </a>
+</div>
+@*------------------------------------------------Replace all of this div start-----------------------------------------------------------------*@
+<div id="aboutUs" class="row contentBox">
+    <h2>About us</h2>
+    <div class="col-md-6"><img class="img-responsive" src="https://i.imgur.com/tRPPS4N.jpg" alt="Alternate Text" /></div>
+    <div class="aboutUs col-md-6">
+        <p>Welcome to our barbershop. We offer you various kinds of service with a reasonalbe pirce for you. This barbershop only provide the user who only use ASP.NET razor page in their daily life :)</p>
+    </div>
+</div>
+
+
+<div id="designer" class="row contentBox">
+    <h2>Our Team</h2>
+    <table>
+        <tbody>
+            @{
+                var flag = 0;
+                @foreach (var item in Model.Employee)
+                {
+                    <div class="col-md-3">
+                        <a asp-page="./Designer" asp-route-id="@item.EmployeeID"><img class="img-thumbnail" src="@item.ImgPath" alt="Alternate Text" /></a>
+                        <a asp-page="./Designer" asp-route-id="@item.EmployeeID"><h4>@Html.DisplayFor(modelItem => item.FullName)</h4></a>
+                    </div>
+                    flag++;
+                    if (flag == 4) { break; }
+                }
+            }
+
+        </tbody>
+    </table>
+    <a class="seeMore" asp-page="./AllDesigner">See more</a>
+</div>
+
+
+<div id="service" class="row contentBox">
+    <h2>Service</h2>
+    <table>
+        <tbody>
+            @foreach (var item in Model.Service)
+            {
+                <tr>
+                    <td class="col-md-3">
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </td>
+                    <td class="col-md-5 border-left">
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td class="col-md-2 border-left">
+                        £ @Html.DisplayFor(modelItem => item.Price)
+                    </td>
+                    <td class="col-md-2 border-left">
+                        @Html.DisplayFor(modelItem => item.Duration) min
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<div id="product" class="row contentBox">
+    <h2>Product</h2>
+    @{
+        var flagProduct = 0;
+        @foreach (var item in Model.Product)
+        {
+            <div class="col-md-3">
+                <a asp-page="./Product" asp-route-id="@item.ProductID"><img src="@item.ImgPath" alt="Alternate Text" /></a>
+            </div>
+            flagProduct++;
+            if (flagProduct == 4) { break; }
+        }
+    }
+    <a class="seeMore" asp-page="./AllProduct">See more</a>
+</div>
+@if (SignInManager.IsSignedIn(User))
+{
+    <a asp-page="#" asp-route-id="@UserManager.GetUserId(User)" id="bookingIcon">Booking now</a>
+}
+
+@*------------------------------------------------Replace all of this div end-----------------------------------------------------------------*@
